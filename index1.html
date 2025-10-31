@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>SAVR — About / Explore</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Fav icon (inline svg data) -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='48' fill='%23f9f6ff'/><text x='50' y='58' font-size='40' text-anchor='middle' fill='%230d1325' font-family='Poppins'>S</text></svg>" />
+
+  <meta name="description" content="SAVR — Explore. Challenges, Circles, Focus Rooms and habit-building tools for students." />
+
+  <style>
+    /* ========= ROOT & RESET ========= */
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --lav:#e3d6ff;
+      --pink:#ffd6ef;
+      --cyan:#b8fff3;
+      --cream:#fffaf5;
+      --dark:#0d1325;
+      --muted:#6b6b7a;
+      --shadow:rgba(180,180,255,.35);
+      --card-shadow:rgba(30,30,80,.06);
+      --grad:linear-gradient(90deg,#a88bff,#ffb3de,#b5f6ff);
+      --glass: rgba(255,255,255,0.6);
+      --radius-lg:24px;
+      --radius-md:14px;
+      --radius-sm:8px;
+      --glass-strong: rgba(255,255,255,0.75);
+      --accent: #8a63ff;
+      --success: #2bb673;
+      --danger: #ff6b6b;
+      --transition: 0.28s cubic-bezier(.2,.9,.2,1);
+      --nav-height:72px;
+    }
+
+    html,body{height:100%}
+    body{
+      font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;
+      background:var(--cream);color:var(--dark);
+      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+      line-height:1.45;scroll-behavior:smooth;
+      padding-bottom:120px; /* allow space for footer */
+    }
+
+    a{color:inherit;text-decoration:none}
+    img{max-width:100%;display:block}
+
+    /* ========== TOPBAR (integrated local file links) ========== */
+    .topbar{
+      position:sticky;top:0;z-index:9999;height:var(--nav-height);
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.85), rgba(250,250,254,0.85));
+      border-bottom:1px solid rgba(0,0,0,0.04);
+      backdrop-filter: blur(6px);
+    }
+    .topbar-inner{ width: min(96%, 1200px); display:flex; align-items:center; justify-content:space-between; gap:12px; padding:6px 0; }
+
+    .logo{font-weight:900;font-size:22px;background:var(--grad); -webkit-background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:0.6px}
+    nav.primary{display:flex;align-items:center;gap:12px}
+    nav.primary a{margin:0 8px;text-decoration:none;color:var(--dark);font-weight:600;padding:8px 10px;border-radius:8px;transition:all .18s ease; font-size:14px}
+    nav.primary a.active{ background:linear-gradient(90deg, rgba(168,139,255,0.12), rgba(255,179,222,0.12)); color:var(--dark); box-shadow:0 10px 28px rgba(170,120,250,.06) }
+    .nav-toggle{ display:none; border:0; background:transparent; font-weight:700; font-size:18px; padding:6px 8px; cursor:pointer }
+    .cta{padding:10px 18px;border-radius:28px;border:none;background:var(--grad);color:#fff;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(180,120,250,.12);}
+
+    /* Header shrink */
+    .header--scrolled{ box-shadow:0 14px 40px rgba(18,18,60,.08); padding:8px 36px; height:64px }
+
+    /* ========== HERO ========== */
+    .hero{
+      min-height:86vh;display:flex;align-items:center;gap:40px;padding:110px 7% 80px;
+      background:linear-gradient(180deg,#fffafc 0%,#f6f9ff 100%);position:relative;overflow:hidden;
+      text-align:left;
+    }
+    .hero-left{flex:1;max-width:740px}
+    .hero h1{font-size:68px;line-height:0.95;font-weight:900;margin-bottom:18px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:hue 12s linear infinite}
+    @keyframes hue{to{filter:hue-rotate(360deg)}}
+    .hero p{font-size:18px;color:var(--muted);max-width:620px;margin-bottom:22px}
+    .hero-actions{display:flex;gap:14px;align-items:center}
+    .hero-actions .primary{padding:14px 26px;border-radius:30px;border:none;background:var(--grad);color:white;font-weight:700;cursor:pointer;box-shadow:0 18px 50px rgba(170,120,250,.12)}
+    .hero-actions .secondary{padding:12px 18px;border-radius:12px;border:1px solid rgba(120,120,150,.06);background:transparent;cursor:pointer;font-weight:600;color:var(--dark)}
+
+    .hero-right{flex:0 0 360px;display:flex;flex-direction:column;gap:16px;align-items:flex-end}
+    .profile-card{width:100%;max-width:360px;padding:18px;border-radius:20px;background:rgba(255,255,255,0.9);backdrop-filter:blur(6px);box-shadow:0 20px 50px var(--card-shadow)}
+    .greeting{font-weight:800;font-size:18px;color:#222}
+    .moto{font-size:13px;color:var(--muted);margin-top:6px}
+    .progress{margin-top:14px}
+    .progress .label{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:6px}
+    .progress .bar{height:10px;background:linear-gradient(90deg,#f0f0ff,#fff);border-radius:999px;position:relative;overflow:hidden}
+    .progress .bar > i{position:absolute;left:0;top:0;bottom:0;width:10%;background:var(--grad);border-radius:999px;transition:width .9s cubic-bezier(.2,.9,.2,1)}
+    .small-stats{display:flex;gap:10px;margin-top:14px}
+    .small-stat{flex:1;padding:8px;border-radius:12px;background:rgba(255,255,255,0.85);text-align:center;font-weight:700}
+    .small-stat span{display:block;font-size:12px;color:var(--muted);font-weight:500}
+
+    /* ========== ABOUT PANE (inserted simple about content) ========= */
+    .about-card{
+      margin-top:22px;padding:18px;border-radius:14px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 12px 40px rgba(30,30,90,.04);
+      border:1px solid rgba(180,180,220,.06);
+    }
+    .about-card h3{margin-bottom:8px}
+    .about-card p{color:var(--muted)}
+
+    /* ========== EXPLORE CARDS ========== */
+    section{padding:80px 7%}
+    .section-title{text-align:center;font-size:40px;font-weight:800;margin-bottom:42px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+    .card{
+      background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);border-radius:18px;padding:28px;text-align:center;border:1px solid rgba(150,150,200,.04);
+      box-shadow:0 12px 30px var(--card-shadow);transition:transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover{transform:translateY(-8px);box-shadow:0 30px 60px rgba(120,120,200,.09)}
+    .card .icon{font-size:42px;margin-bottom:12px}
+    .card h3{font-size:20px;margin-bottom:8px}
+    .card p{color:var(--muted);font-size:15px;line-height:1.6;margin-bottom:18px}
+    .card .go{padding:10px 20px;border-radius:999px;border:none;background:var(--grad);color:#fff;font-weight:700;cursor:pointer}
+    .card .meta{font-size:12px;color:var(--muted);margin-top:10px}
+
+    /* ========== QUOTES & BLOBS ========== */
+    .quotes{
+      background:linear-gradient(180deg,#f8f6ff 0%,#fff 100%);
+      text-align:center;position:relative;overflow:hidden;padding:60px 5%;
+    }
+    .quote-wrap{max-width:900px;margin:0 auto;}
+    .quote{max-width:820px;margin:0 auto;font-size:20px;color:var(--dark);line-height:1.6;padding:32px 20px;position:relative}
+    .quote::before,.quote::after{
+      content:"“";position:absolute;font-size:110px;color:rgba(200,200,255,.25);font-family:serif;line-height:0;opacity:.9}
+    .quote::before{left:-16px;top:8px}
+    .quote::after{content:"”";right:-16px;bottom:0}
+    .bgblob{position:absolute;width:420px;height:420px;background:var(--grad);filter:blur(110px);opacity:.32;animation:float 10s ease-in-out infinite alternate}
+    .bgblob.one{top:-120px;left:-120px}
+    .bgblob.two{bottom:-120px;right:-100px}
+    @keyframes float{to{transform:translateY(30px) translateX(30px)}}
+
+    .quote-controls{margin-top:18px;display:flex;justify-content:center;gap:10px}
+    .quote-controls button{padding:10px 12px;border-radius:10px;border:1px solid rgba(120,120,160,.06);background:transparent;cursor:pointer;font-weight:600}
+
+    /* ========== STATS & CTA ========== */
+    .stats{background:#fffafc;text-align:center}
+    .stats-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:36px;margin-top:30px}
+    .stat{background:rgba(255,255,255,.85);backdrop-filter:blur(6px);border-radius:20px;padding:28px 34px;box-shadow:0 8px 30px var(--card-shadow);min-width:160px}
+    .stat h4{font-size:34px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:6px}
+    .stat p{color:var(--muted);font-weight:600}
+    .cta-section{padding:72px 7%;text-align:center;background:linear-gradient(90deg,#fdfbff,#eafaff);border-top:1px solid rgba(200,200,255,.06)}
+    .cta-section h2{font-size:32px;margin-bottom:14px;color:var(--dark)}
+    .cta-section button{padding:14px 34px;border:none;border-radius:36px;background:var(--grad);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 10px 40px rgba(180,140,250,.12)}
+    .cta-section .muted{color:var(--muted);margin-top:12px;font-size:14px}
+
+    /* ========== FOOTER ========== */
+    footer{background:#fff;padding:40px 7%;text-align:center;color:var(--muted);font-size:14px;border-top:1px solid #f0edf9;margin-top:60px}
+    footer a{color:var(--muted);text-decoration:none;margin:0 8px}
+    footer a:hover{text-decoration:underline}
+
+    /* ========== MODAL ========== */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(6,6,20,.45);display:none;align-items:center;justify-content:center;z-index:1100}
+    .modal{width:min(920px,94%);background:white;border-radius:18px;padding:20px;box-shadow:0 30px 80px rgba(10,10,30,.4)}
+    .modal .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .modal .modal-body{display:grid;grid-template-columns:1fr 320px;gap:18px}
+    .modal .field{margin-bottom:12px}
+    .modal .focus-timer{background:linear-gradient(180deg,#f8fbff,#fff);padding:14px;border-radius:12px;text-align:center}
+    .modal .focus-controls{display:flex;gap:8px;justify-content:center;margin-top:10px}
+
+    /* tiny utilities */
+    .muted{color:var(--muted)}
+    .chip{display:inline-block;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.7);box-shadow:0 6px 20px rgba(50,50,120,.03);font-weight:700}
+    .flex{display:flex;align-items:center}
+    .space{height:20px}
+
+    /* responsive */
+    @media(max-width:1024px){
+      .cards{grid-template-columns:repeat(2,1fr)}
+      .hero{flex-direction:column;padding-top:120px}
+      .hero-right{align-items:stretch}
+      .topbar-inner{padding:6px 18px}
+    }
+    @media(max-width:700px){
+      .cards{grid-template-columns:1fr;gap:18px}
+      .hero{padding:100px 5% 60px}
+      .hero-right{display:none}
+      .nav-toggle{display:inline-flex}
+      nav.primary{display:none}
+    }
+  </style>
+</head>
+<body>
+  <!-- TOPBAR (merged wiring links from simple About snippet) -->
+  <div class="topbar" role="navigation" aria-label="Main">
+    <div class="topbar-inner">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="logo" aria-hidden="false">SAVR</div>
+        <nav class="primary" id="primaryNav" role="navigation" aria-label="Primary navigation">
+          <!-- Wired local file links inserted as requested -->
+          <a href="file:///C:/Projects/flexi/luminous%20awesome%20beaver-react/public/index.html" data-local>Home</a>
+          <a href="file:///C:/Projects/flexi/explore/index.html" data-local>Explore</a>
+          <a href="file:///C:/Projects/flexi/company%20about/index.html" data-local>How It Works</a>
+          <a href="file:///C:/Projects/flexi/community/index.html" data-local>Community</a>
+          <a href="file:///C:/Projects/flexi/about/index.html" data-local>About</a>
+          <a href="file:///C:/Projects/flexi/challenges/index.html" data-local>Challenges</a>
+        </nav>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:10px">
+        <button class="nav-toggle" id="navToggle" aria-controls="primaryNav" aria-expanded="false">☰</button>
+        <button class="cta" id="startStreak" title="Start your streak">Start Your Streak</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN PAGE -->
+  <div class="page">
+    <!-- HERO / About mix -->
+    <main>
+      <section class="hero" id="about" aria-labelledby="heroTitle">
+        <div class="hero-left">
+          <h1 id="heroTitle">About SAVR — Small routines, big results</h1>
+          <p id="heroIntro">SAVR helps students build better habits with micro-challenges, focus rooms, and friendly accountability. Start a streak, join a circle, or jump into a focus room — everything designed to fit between classes.</p>
+
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px">
+            <a href="file:///C:/Projects/flexi/explore/index.html#focus-rooms" data-local class="cta">Enter Focus Room</a>
+            <a href="file:///C:/Projects/flexi/explore/index.html" data-local style="padding:10px 16px;border-radius:12px;border:1px solid rgba(0,0,0,0.06);background:transparent;font-weight:700">How it works → Explore</a>
+          </div>
+
+          <div class="about-card" role="region" aria-label="About SAVR short">
+            <h3>What is SAVR?</h3>
+            <p>SAVR is an experimental habit-building toolkit for students — short timed sessions, social accountability, and streak-focused motivators. This page is a local dev mock so links open your project files directly when clicked.</p>
+            <p style="margin-top:8px;color:var(--muted)">Tip: Use the header links to jump between the local pages in your `C:\Projects\flexi\` folder.</p>
+          </div>
+
+          <div style="margin-top:22px">
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <a class="small-pill" href="#explore">Explore Challenges</a>
+              <a class="small-pill" href="#community">Find Circles</a>
+              <a class="small-pill" href="#focus">Start Focus Room</a>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-right" aria-label="Quick dashboard">
+          <div class="profile-card" role="region" aria-label="Profile summary">
+            <div class="greeting" id="greetingText">Good Evening — Keep going ✨</div>
+            <div class="moto">Tiny habits compound. 10 minutes today is progress.</div>
+            <div class="progress" aria-hidden="false" style="margin-top:12px">
+              <div class="label"><span>Today's consistency</span><strong id="pcntText">28%</strong></div>
+              <div class="bar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="28"><i id="progressFill"></i></div>
+            </div>
+
+            <div class="small-stats">
+              <div class="small-stat">
+                5 <span>Streak</span>
+              </div>
+              <div class="small-stat">
+                3 <span>Circles</span>
+              </div>
+              <div class="small-stat">
+                18 <span>Minutes</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:12px;flex-direction:column;width:100%;align-items:stretch">
+            <div style="padding:12px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfdff);box-shadow:0 10px 24px rgba(140,120,200,.04)">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="font-weight:800">Today's Challenge</div>
+                <div class="muted" style="font-size:13px">10 min</div>
+              </div>
+              <div class="muted" style="margin-top:8px;font-size:13px">Read two pages, review notes, or practice vocab for 10 minutes.</div>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <button class="go" id="startChallenge">Start</button>
+                <button class="small-pill" id="skipChallenge">Skip</button>
+              </div>
+            </div>
+
+            <div style="padding:12px;border-radius:12px;background:rgba(255,255,255,0.6);box-shadow:0 8px 30px rgba(30,30,90,.04)">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <div style="font-weight:800">Next Focus Room</div>
+                <div class="muted" style="font-size:13px">In 40m</div>
+              </div>
+              <div class="muted" style="margin-top:8px;font-size:13px">Join the 7pm study sprint — math circle.</div>
+              <div style="margin-top:10px;display:flex;gap:8px">
+                <button class="go" id="joinRoom">Join</button>
+                <button class="small-pill" id="remindBtn">Remind me</button>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- ========== EXPLORE / CARDS ========== -->
+      <section id="explore" class="reveal" aria-labelledby="exploreTitle">
+        <h2 id="exploreTitle" class="section-title">What to Explore</h2>
+
+        <div class="cards" aria-live="polite">
+          <article class="card" aria-labelledby="card1Title">
+            <div class="icon" aria-hidden="true">🎯</div>
+            <h3 id="card1Title">Daily Challenges</h3>
+            <p>Short, fun habit challenges you can do between classes — stretches, micro-writing, flashcard sprints.</p>
+            <div style="display:flex;justify-content:center;gap:8px">
+              <button class="go" onclick="openChallenge('daily')">Explore</button>
+              <button class="small-pill">Popular</button>
+            </div>
+            <div class="meta">Avg. time: 5-15 minutes · New challenge daily</div>
+          </article>
+
+          <article class="card" aria-labelledby="card2Title">
+            <div class="icon" aria-hidden="true">👥</div>
+            <h3 id="card2Title">Community Circles</h3>
+            <p>Find study groups and wellness circles paired by timezone, major, and vibe.</p>
+            <div style="display:flex;justify-content:center;gap:8px">
+              <button class="go" onclick="openChallenge('community')">Join</button>
+              <button class="small-pill">Trending</button>
+            </div>
+            <div class="meta">3–15 members · Live check-ins</div>
+          </article>
+
+          <article class="card" aria-labelledby="card3Title">
+            <div class="icon" aria-hidden="true">🧘‍♀️</div>
+            <h3 id="card3Title">Focus Rooms</h3>
+            <p>Timer-based shared focus sessions with chill music, live progress bars, and a friendly host.</p>
+            <div style="display:flex;justify-content:center;gap:8px">
+              <button class="go" onclick="openFocusRoom()">Enter</button>
+              <button class="small-pill">Now live</button>
+            </div>
+            <div class="meta">Timed sessions · Pomodoro · Live stats</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ========== QUOTES & BLOBS ========== -->
+      <section class="quotes reveal" aria-labelledby="quotesTitle">
+        <div class="bgblob one" aria-hidden="true"></div>
+        <div class="bgblob two" aria-hidden="true"></div>
+
+        <h2 id="quotesTitle" class="section-title">Tiny Reminders</h2>
+        <div class="quote-wrap">
+          <div id="quoteText" class="quote">"Discipline beats motivation. The habit you build today shapes the student you’ll be tomorrow."</div>
+          <div class="quote-controls" role="tablist" aria-label="Quote controls">
+            <button onclick="prevQuote()">← Prev</button>
+            <button onclick="nextQuote()">Next →</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== STATS ========== -->
+      <section class="stats reveal" id="impact" aria-labelledby="impactTitle">
+        <h2 id="impactTitle" class="section-title">Our Impact</h2>
+        <div class="stats-grid">
+          <div class="stat">
+            <h4>12K+</h4>
+            <p>Active Students</p>
+          </div>
+          <div class="stat">
+            <h4>1.2M+</h4>
+            <p>Habits Logged</p>
+          </div>
+          <div class="stat">
+            <h4>98%</h4>
+            <p>Consistency Growth</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== CTA SECTION ========== -->
+      <section class="cta-section reveal" id="start" aria-labelledby="startTitle">
+        <h2 id="startTitle">Ready to Build Your Routine?</h2>
+        <button onclick="scrollToSection('#explore')">Get Started Now</button>
+        <div class="muted">Sign up in two clicks — or continue anonymously to try a focus room.</div>
+      </section>
+
+      <!-- ========== FOCUS ROOM / TIMER MODAL (hidden until opened) ========== -->
+      <div id="modalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+        <div class="modal" role="document" aria-labelledby="modalTitle">
+          <div class="modal-header">
+            <div>
+              <div style="font-weight:800" id="modalTitle">Start Focus Room</div>
+              <div class="muted" style="font-size:13px">Invite friends or join anonymously</div>
+            </div>
+            <button onclick="closeModal()" class="icon-btn" aria-label="Close modal">✕</button>
+          </div>
+          <div class="modal-body">
+            <div>
+              <div class="field">
+                <label class="muted">Room name</label>
+                <input id="roomName" type="text" value="Evening Study Sprint" style="width:100%;padding:10px;border-radius:8px;border:1px solid #eee;margin-top:8px" />
+              </div>
+              <div class="field">
+                <label class="muted">Duration</label>
+                <div style="display:flex;gap:8px;margin-top:8px">
+                  <select id="duration" style="padding:8px;border-radius:8px;border:1px solid #eee">
+                    <option value="25">25 min</option>
+                    <option value="45">45 min</option>
+                    <option value="60">60 min</option>
+                  </select>
+                  <select id="break" style="padding:8px;border-radius:8px;border:1px solid #eee">
+                    <option value="5">5 min break</option>
+                    <option value="10">10 min break</option>
+                    <option value="15">15 min break</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="muted">Visibility</label>
+                <div style="margin-top:8px;display:flex;gap:8px">
+                  <button class="small-pill" id="visPublic">Public</button>
+                  <button class="small-pill" id="visPrivate">Private</button>
+                </div>
+              </div>
+
+              <div style="margin-top:12px">
+                <button class="go" id="launchRoom">Launch Room</button>
+                <button class="small-pill" onclick="closeModal()">Cancel</button>
+              </div>
+            </div>
+
+            <aside style="background:linear-gradient(180deg,#fbfdff,#fff);border-radius:10px;padding:12px">
+              <div style="font-weight:800">Focus Timer</div>
+              <div id="timerDisplay" class="focus-timer" style="margin-top:10px;font-size:28px">25:00</div>
+              <div class="focus-controls">
+                <button onclick="startTimer()" class="small-pill">Start</button>
+                <button onclick="pauseTimer()" class="small-pill">Pause</button>
+                <button onclick="resetTimer()" class="small-pill">Reset</button>
+              </div>
+              <div style="margin-top:12px;text-align:center" class="muted">Sessions sync in supported rooms (mock)</div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========== FOOTER ========== -->
+      <footer id="community" class="reveal" role="contentinfo" aria-labelledby="footerTitle">
+        <p id="footerTitle">© 2025 SAVR — Made with 💗 for students · <a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Contact</a></p>
+      </footer>
+    </main>
+  </div>
+
+  <!-- ========== SCRIPTS ========== -->
+  <script>
+    /***** Helpers for DOM *****/
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+
+    /* ========== Header nav active wiring for local file links ========== */
+    (function wireLocalLinksAndHighlight(){
+      const anchors = Array.from(document.querySelectorAll('a[data-local]'));
+      const current = window.location.href;
+      anchors.forEach(a=>{
+        // highlight if path matches or filename matches
+        const href = a.getAttribute('href') || '';
+        try {
+          if (href && current.indexOf(decodeURIComponent(href)) !== -1) a.classList.add('active');
+          else {
+            const segA = href.split('/').pop();
+            const segC = current.split('/').pop();
+            if (segA && segC && segA === segC) a.classList.add('active');
+          }
+        } catch(e){}
+        // clicking a local link: allow modifier keys to open in new window/tab
+        a.addEventListener('click', (ev)=>{
+          if (ev.ctrlKey || ev.metaKey || ev.shiftKey) return;
+          ev.preventDefault();
+          const h = a.getAttribute('href');
+          if (!h) return;
+          try { window.location.href = h; } catch(err) { console.warn('open local failed', err); }
+        });
+      });
+    })();
+
+    /* ========== Mobile nav toggle ========= */
+    (function mobileNav(){
+      const toggle = document.getElementById('navToggle');
+      const nav = document.getElementById('primaryNav');
+      if(!toggle || !nav) return;
+      let open = false;
+      toggle.addEventListener('click', ()=>{
+        open = !open;
+        toggle.setAttribute('aria-expanded', String(open));
+        if(open){
+          nav.style.display = 'flex';
+          nav.style.position = 'absolute';
+          nav.style.right = '12px';
+          nav.style.top = '82px';
+          nav.style.flexDirection = 'column';
+          nav.style.padding = '12px';
+          nav.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,250,254,0.98))';
+          nav.style.borderRadius = '12px';
+          nav.style.boxShadow = '0 12px 40px rgba(0,0,0,0.12)';
+        } else {
+          nav.style.display = '';
+          nav.style.position = '';
+          nav.style.right = '';
+          nav.style.top = '';
+          nav.style.flexDirection = '';
+          nav.style.padding = '';
+          nav.style.background = '';
+          nav.style.borderRadius = '';
+          nav.style.boxShadow = '';
+        }
+      });
+      // close nav with escape
+      document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape'){ nav.style.display=''; toggle.setAttribute('aria-expanded','false'); }});
+    })();
+
+    /* ========== Header scroll behavior ========= */
+    (function headerScroll(){
+      const topbar = document.querySelector('.topbar');
+      let last = 0;
+      window.addEventListener('scroll', ()=>{
+        const sc = window.scrollY || document.documentElement.scrollTop;
+        if (sc > 10) topbar.classList.add('header--scrolled'); else topbar.classList.remove('header--scrolled');
+        if (sc > last && sc > 150) topbar.style.transform = 'translateY(-92px)'; else topbar.style.transform = 'translateY(0)';
+        last = sc;
+      }, {passive:true});
+    })();
+
+    /* ========== Greeting & Progress fill ========== */
+    function updateGreetingAndProgress(){
+      const greetingText = document.getElementById('greetingText');
+      const progressFill = document.getElementById('progressFill');
+      const pcntText = document.getElementById('pcntText');
+      if(!greetingText || !progressFill || !pcntText) return;
+      const now = new Date();
+      const hour = now.getHours();
+      let msg = "Keep going ✨";
+      if (hour >= 5 && hour < 12) msg = "Good Morning — small steps win!";
+      else if (hour >= 12 && hour < 17) msg = "Good Afternoon — you've got this!";
+      else if (hour >= 17 && hour < 21) msg = "Good Evening — finish strong!";
+      else msg = "Night owl mode — one more focused sprint!";
+      greetingText.textContent = msg;
+      const val = Math.min(92, (now.getMinutes() * 3) % 100);
+      progressFill.style.width = val + '%';
+      pcntText.textContent = val + '%';
+    }
+    updateGreetingAndProgress();
+    setInterval(updateGreetingAndProgress, 8000);
+
+    /* ========== Scroll reveal ========== */
+    (function scrollReveal(){
+      const revealEls = Array.from(document.querySelectorAll('.reveal'));
+      if(!('IntersectionObserver' in window)) { revealEls.forEach(el=>el.classList.add('is-visible')); return; }
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('is-visible'); });
+      }, {threshold: 0.15});
+      revealEls.forEach(el => obs.observe(el));
+    })();
+
+    /* ========== Quote rotator ========== */
+    const quotes = [
+      "Discipline beats motivation. The habit you build today shapes the student you’ll be tomorrow.",
+      "Small focus sessions compound into big achievements — just start the timer.",
+      "Consistency is collected in minutes — not miracles. Do one minute more.",
+      "Plan your next 20 minutes — the rest will follow.",
+      "When focus feels short, start with just five minutes and surprise yourself."
+    ];
+    let qI = 0;
+    const qEl = document.getElementById('quoteText');
+    function showQuote(i){
+      if(!qEl) return;
+      qEl.style.opacity = 0; qEl.style.transform = 'translateY(8px)';
+      setTimeout(()=>{ qEl.textContent = quotes[i]; qEl.style.opacity = 1; qEl.style.transform='translateY(0)'; }, 260);
+    }
+    function nextQuote(){ qI = (qI + 1) % quotes.length; showQuote(qI); }
+    function prevQuote(){ qI = (qI - 1 + quotes.length) % quotes.length; showQuote(qI); }
+    setInterval(nextQuote, 10000);
+    if (qEl) { qEl.setAttribute('role','status'); qEl.setAttribute('aria-live','polite'); }
+
+    /* ========== Modal / Focus Room logic (client-side only) ========== */
+    const modal = document.getElementById('modalBackdrop');
+    function openFocusRoom(){ if(!modal) return; modal.style.display='flex'; modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ if(!modal) return; modal.style.display='none'; modal.setAttribute('aria-hidden','true'); }
+    function openChallenge(id){ openFocusRoom(); const rn = document.getElementById('roomName'); if(rn) rn.value = id === 'daily' ? 'Daily Challenge Room' : id === 'community' ? 'Welcome Circle' : 'Focus Room'; }
+    window.openFocusRoom = openFocusRoom; window.openChallenge = openChallenge;
+    document.getElementById('joinRoom').addEventListener('click', openFocusRoom);
+    document.getElementById('startChallenge').addEventListener('click', ()=> alert('Starting challenge (demo).'));
+
+    /* ========== Focus Timer (client-side) ========== */
+    let timerInt = null; let remaining = 25 * 60;
+    const timerDisplay = document.getElementById('timerDisplay');
+    const durationSelect = document.getElementById('duration');
+    function formatTime(secs){ const m = Math.floor(secs/60).toString().padStart(2,'0'); const s = (secs%60).toString().padStart(2,'0'); return `${m}:${s}`; }
+    function startTimer(){ if (!timerInt){ remaining = parseInt(durationSelect.value || 25) * 60; } clearInterval(timerInt); timerInt = setInterval(()=>{ if(remaining<=0){ clearInterval(timerInt); timerInt=null; alert('Session complete 🎉'); timerDisplay.textContent = formatTime(0); return; } remaining--; timerDisplay.textContent = formatTime(remaining); }, 1000); }
+    function pauseTimer(){ clearInterval(timerInt); timerInt=null; }
+    function resetTimer(){ clearInterval(timerInt); timerInt=null; remaining = parseInt(durationSelect.value || 25) * 60; timerDisplay.textContent = formatTime(remaining); }
+    window.startTimer = startTimer; window.pauseTimer = pauseTimer; window.resetTimer = resetTimer;
+    document.getElementById('launchRoom').addEventListener('click', ()=> { closeModal(); alert('Room launched — mock demo.'); });
+
+    /* ========== Theme toggle (simple) ========== */
+    // not included on topbar to keep simple; you can add a theme toggle easily.
+
+    /* ========== Utility: scrollToSection ========== */
+    function scrollToSection(sel){ const el = document.querySelector(sel); if(el) el.scrollIntoView({behavior:'smooth', block:'start'}); }
+    window.scrollToSection = scrollToSection;
+
+    /* ========== Small demo toast ========== */
+    (function showToast(){ const t = document.createElement('div'); t.textContent = 'Tip: Click "Enter Focus Room" to try a mock session.'; t.style.position='fixed'; t.style.right='20px'; t.style.bottom='22px'; t.style.padding='12px 16px'; t.style.borderRadius='10px'; t.style.background='linear-gradient(90deg,#a88bff,#ffb3de)'; t.style.color='#fff'; t.style.boxShadow='0 10px 30px rgba(120,80,200,.12)'; t.style.fontWeight='700'; t.style.zIndex=9999; document.body.appendChild(t); setTimeout(()=> t.style.opacity='0',6000); setTimeout(()=> t.remove(),7000); })();
+
+    /* ========== Accessibility: close modal on Escape ========== */
+    document.addEventListener('keydown', (e)=> { if (e.key === 'Escape') closeModal(); });
+
+    /* ========== End ========= */
+  </script>
+</body>
+</html>

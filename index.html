@@ -1,0 +1,819 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SAVR â€” Build Habits. Save Time.</title>
+  <meta name="description" content="SAVR Habit Tracker â€” Track habits, build streaks, get insights. Designed to help you create lasting behavior change." />
+  <meta property="og:title" content="SAVR â€” Habit Tracker" />
+  <meta property="og:description" content="Build Habits. Save Time. Unlock consistency." />
+  <meta name="theme-color" content="#0d0d0d" />
+
+  <!-- FONTS -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+
+  <!-- INLINE STYLES: large file, self-contained -->
+  <style>
+    /* RESET */
+    :root {
+      --bg: #0d0d0d;
+      --panel: #0f0f10;
+      --muted: #a8a8a8;
+      --text: #eaeaea;
+      --accent: #00ffcc;
+      --accent-2: #7c5cff;
+      --glass: rgba(255,255,255,0.02);
+      --glass-2: rgba(255,255,255,0.03);
+      --success: #22c55e;
+      --danger: #ff6b6b;
+      --max-width: 1200px;
+      --radius: 12px;
+      --timing: 400ms;
+    }
+
+    [data-theme="light"] {
+      --bg: #ffffff;
+      --panel: #f5f7fb;
+      --muted: #555;
+      --text: #0b1220;
+      --accent: #006b5e;
+      --accent-2: #4650ff;
+      --glass: rgba(10,10,10,0.03);
+      --glass-2: rgba(10,10,10,0.02);
+      --success: #0f9d58;
+      --danger: #e55353;
+    }
+
+    * { box-sizing: border-box; margin:0; padding:0; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    html,body { height:100%; background:var(--bg); color:var(--text); font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    a { color:inherit; text-decoration:none; cursor:pointer; }
+    img { max-width:100%; display:block; }
+
+    /* WRAPPER */
+    .container { max-width:var(--max-width); margin:0 auto; padding:0 24px; }
+
+    /* NAVBAR */
+    header.main-header {
+      position:sticky; top:0; z-index:999; backdrop-filter: blur(6px);
+      background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.1));
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+    }
+    .navbar {
+      height:72px; display:flex; align-items:center; justify-content:space-between;
+      gap:16px;
+    }
+    .brand {
+      display:flex; gap:12px; align-items:center;
+      font-weight:700; font-size:1.05rem; letter-spacing:0.4px;
+    }
+    .brand img { width:44px; height:44px; border-radius:8px; object-fit:cover; filter:drop-shadow(0 2px 6px rgba(0,0,0,0.4)); }
+    .nav-links { display:flex; gap:18px; align-items:center; list-style:none; }
+    .nav-links li a { color:var(--muted); padding:8px 10px; border-radius:8px; transition:all 180ms ease; font-weight:500; }
+    .nav-links li a:hover { color:var(--text); background:var(--glass-2); }
+    .cta { display:flex; gap:10px; align-items:center; }
+
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      background:linear-gradient(90deg, var(--accent), var(--accent-2));
+      color:#001010; padding:10px 16px; border-radius:10px; font-weight:700;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    }
+    .btn.secondary {
+      background:transparent; color:var(--text); border: 1px solid rgba(255,255,255,0.06);
+      padding:9px 14px; font-weight:600;
+    }
+    .btn:active { transform:translateY(1px) scale(0.997); }
+    .btn.ghost { background:transparent; color:var(--accent); border:1px dashed rgba(0,0,0,0.1); }
+
+    /* HERO */
+    .hero {
+      padding:72px 0 48px 0;
+      display:grid; grid-template-columns: 1fr 520px; gap:36px; align-items:center;
+      align-content:start;
+    }
+
+    .hero-left h1 {
+      font-size:2.6rem; line-height:1.02; letter-spacing:-0.5px; margin-bottom:18px;
+      background:linear-gradient(90deg,var(--text), rgba(255,255,255,0.85)); -webkit-background-clip:text; background-clip:text; color:transparent;
+      font-weight:800;
+    }
+    .lead { color:var(--muted); font-size:1.05rem; margin-bottom:20px; max-width:60ch; }
+    .cta-row { display:flex; gap:12px; align-items:center; margin-bottom:28px; flex-wrap:wrap; }
+
+    /* HERO VISUAL MOCK */
+    .device-mock {
+      width:100%; border-radius:16px; overflow:hidden; box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.03);
+      padding:22px;
+    }
+    .mock-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .mock-title { color:var(--muted); font-weight:700; }
+    .mock-screen { margin-top:14px; background:linear-gradient(180deg,#071014 0%, #0b1316 100%); border-radius:10px; padding:18px; min-height:320px; display:flex; gap:16px; overflow:hidden; }
+
+    /* small dashboard inside hero mock */
+    .dash-left { width:48%; display:flex; flex-direction:column; gap:12px; }
+    .stat { background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.015)); padding:12px; border-radius:10px; }
+    .streak { font-weight:800; font-size:1.8rem; color:var(--accent); }
+    .dash-chart { width:52%; background:linear-gradient(90deg, rgba(124,92,255,0.06), rgba(0,255,204,0.04)); border-radius:8px; padding:10px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+
+    /* SECTION STYLES */
+    section { padding:56px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+    .section-title { display:flex; align-items:center; gap:12px; margin-bottom:18px; }
+    .eyebrow { color:var(--accent); font-weight:700; font-size:.95rem; }
+    h2 { font-size:1.6rem; margin:0; font-weight:800; }
+    .section-lead { color:var(--muted); max-width:70ch; margin-bottom:18px; }
+
+    /* FEATURES GRID */
+    .grid { display:grid; grid-template-columns: repeat(3,1fr); gap:18px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02));
+      padding:18px; border-radius:12px; min-height:120px; transition: transform var(--timing) ease, box-shadow var(--timing) ease;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .card:hover { transform: translateY(-8px); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+    .card h3 { font-size:1.05rem; margin-bottom:8px; }
+    .card p { color:var(--muted); font-size:.95rem; }
+
+    /* ICONS */
+    .icon {
+      width:44px; height:44px; border-radius:10px; background:linear-gradient(90deg,var(--accent), var(--accent-2)); display:flex; align-items:center; justify-content:center; color:#001010; font-weight:800; margin-bottom:10px;
+    }
+
+    /* TESTIMONIALS */
+    .testimonials { display:grid; grid-template-columns: 1fr 1fr; gap:18px; align-items:center; }
+    .testimonial { padding:16px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.03); }
+    .testimonial p { color:var(--muted); margin-bottom:12px; }
+    .avatar { width:56px; height:56px; border-radius:12px; overflow:hidden; }
+
+    /* CTA BANNER */
+    .cta-banner { display:flex; align-items:center; justify-content:space-between; gap:24px; padding:24px; border-radius:12px; background:linear-gradient(90deg, rgba(124,92,255,0.06), rgba(0,255,204,0.03)); border:1px solid rgba(255,255,255,0.03); }
+    .cta-banner .big { font-size:1.25rem; font-weight:800; }
+
+    /* PRICING (simple cards) */
+    .pricing-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:18px; }
+    .plan { padding:18px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.02)); border:1px solid rgba(255,255,255,0.03); }
+
+    /* FAQ */
+    .faq { max-width:900px; margin:0 auto; }
+    .accordion { border-radius:10px; overflow:hidden; border:1px solid rgba(255,255,255,0.03); }
+    .acc-item { border-top: 1px solid rgba(255,255,255,0.02); }
+    .acc-title { padding:14px 18px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+    .acc-body { padding:0 18px 18px 18px; color:var(--muted); display:none; }
+
+    /* FOOTER */
+    footer.site-footer { padding:40px 0; background:linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.03)); }
+    .footer-grid { display:grid; grid-template-columns: 1fr 1fr 1fr; gap:18px; }
+
+    /* SMALL & RESPONSIVE */
+    @media (max-width:1100px) {
+      .hero { grid-template-columns: 1fr 420px; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width:780px) {
+      .hero { grid-template-columns: 1fr; padding-top:40px; gap:18px; }
+      .nav-links { display:none; }
+      .mobile-nav-toggle { display:flex; }
+      .container { padding:0 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .brand span { display:none; }
+    }
+
+    /* small helpers */
+    .muted { color:var(--muted); }
+    .center { text-align:center; }
+    .spacer { height:12px; }
+    .pill { display:inline-block; padding:6px 10px; border-radius:999px; background:var(--glass-2); color:var(--muted); font-weight:700; font-size:.9rem; }
+    .glow { text-shadow: 0 6px 30px rgba(0,255,204,0.06); }
+
+    /* animate-in classes */
+    .fade-up { opacity:0; transform: translateY(18px); transition: opacity 520ms ease, transform 520ms ease; }
+    .fade-up.in { opacity:1; transform:none; }
+
+    /* floating quick action */
+    .quick-action { position:fixed; right:22px; bottom:22px; z-index:1200; display:flex; gap:12px; flex-direction:column; }
+    .quick-action .fab { width:52px; height:52px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#001010; font-weight:800; box-shadow:0 18px 40px rgba(0,0,0,0.45); cursor:pointer; }
+
+    /* subtle fancy SVG decoration */
+    .decor-svg { position:absolute; right:0; top:120px; opacity:0.06; transform:translateX(40px) rotate(8deg); pointer-events:none; }
+
+    /* button color change utility (JS toggles .alt) */
+    .btn.alt { background:linear-gradient(90deg,#ffd166,#ff6b6b); color:#120000; }
+
+    /* Newsletter */
+    .newsletter { display:flex; gap:12px; align-items:center; justify-content:center; margin-top:12px; }
+    .newsletter input { padding:12px 14px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; color:var(--text); min-width:220px; }
+    .newsletter .submit { padding:12px 16px; border-radius:10px; border:none; background:var(--accent); color:#001010; font-weight:700; }
+
+    /* small loader for demo */
+    .loader { width:48px; height:48px; border-radius:999px; border:4px solid rgba(255,255,255,0.04); border-top-color:var(--accent); animation:spin 1s linear infinite; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+
+  </style>
+
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="main-header" role="banner" aria-label="Main header">
+    <div class="container navbar">
+      <div class="brand" title="SAVR Habit Tracker">
+        <!-- inline small logo SVG -->
+        <img alt="SAVR logo" src="../assets/logo.png" onerror="this.style.display='none'"/>
+        <span>SAVR Habit Tracker</span>
+      </div>
+
+      <!-- primary nav (hidden on small screens) -->
+      <ul class="nav-links" role="navigation" aria-label="Primary">
+        <li><a href="C:/Projects/flexi/explore/index.html">Features</a></li>
+        <li><a href="C:/Projects/flexi/company about/index.html">How It Works</a></li>
+        <li><a href="C:/Projects/flexi/explore/index.html">Use Cases</a></li>
+        <li><a href="C:/Projects/flexi/community/index.html">Community</a></li>
+        <li><a href="C:/Projects/flexi/company about/index.html">About</a></li>
+        <li><a href="C:/Projects/flexi/explore/index.html">Contact</a></li>
+      </ul>
+
+      <div class="cta" role="toolbar" aria-label="Primary actions">
+        <a class="btn secondary" href="C:/Projects/flexi/landing page/index.html">Start Your Streak</a>
+        <button id="themeToggle" class="btn ghost" aria-pressed="false" title="Toggle theme">Toggle</button>
+        <button id="altBtnToggle" class="btn" title="Change CTA color">Swap Colors</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <div class="container hero" role="main" aria-labelledby="hero-title">
+
+      <!-- LEFT (text) -->
+      <div class="hero-left fade-up" id="hero-col">
+        <div class="section-title">
+          <span class="eyebrow pill">Habit Tracking â€¢ Streaks â€¢ Insights</span>
+        </div>
+
+        <h1 id="hero-title">Build habits, save time, and keep the momentum.</h1>
+
+        <p class="lead">SAVR helps you create small daily rituals and grow them into lasting gains. Track your streaks, get gentle reminders, join friendly challenges, and receive personalized insights that nudge you forward.</p>
+
+        <div class="cta-row">
+          <a class="btn" href="C:/Projects/flexi/landing page/index.html" id="primaryCTA">Start Free â€” Create Streak</a>
+          <a class="btn secondary" href="C:/Projects/flexi/company about/index.html">How It Works</a>
+          <a class="btn secondary" href="C:/Projects/flexi/community/index.html">Join Community</a>
+        </div>
+
+        <!-- Key metrics -->
+        <div style="display:flex; gap:12px; margin-top:8px; flex-wrap:wrap;">
+          <div class="stat pill" style="background:var(--glass);">ðŸ”¥ <strong id="metric-streaks">12,340</strong> Active Streaks</div>
+          <div class="stat pill" style="background:var(--glass);">ðŸ‘¥ <strong id="metric-users">8,420</strong> Active Users</div>
+          <div class="stat pill" style="background:var(--glass);">â±ï¸ <strong id="metric-hours">54,000+</strong> Hours Saved</div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT (device mock) -->
+      <div class="hero-right">
+        <div class="device-mock fade-up">
+          <div class="mock-top">
+            <div class="mock-title muted">SAVR Dashboard</div>
+            <div style="display:flex; gap:8px; align-items:center;">
+              <div class="pill">Beta</div>
+              <div class="loader" aria-hidden="true" title="live"></div>
+            </div>
+          </div>
+
+          <div class="mock-screen" role="img" aria-label="dashboard preview">
+            <div class="dash-left">
+              <div class="stat" style="display:flex; flex-direction:column;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <div>
+                    <div class="muted">Current streak</div>
+                    <div class="streak">14 ðŸ”¥</div>
+                  </div>
+                  <div style="text-align:right;">
+                    <div class="muted">Today</div>
+                    <div style="font-weight:700;">2 tasks âœ“</div>
+                  </div>
+                </div>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                  <div style="flex:1; padding:8px; border-radius:8px; background:rgba(255,255,255,0.01); text-align:center;">
+                    <div class="muted">Consistency</div>
+                    <div style="font-weight:800; font-size:1.1rem;">82%</div>
+                  </div>
+                  <div style="flex:1; padding:8px; border-radius:8px; background:rgba(255,255,255,0.01); text-align:center;">
+                    <div class="muted">Streak Rank</div>
+                    <div style="font-weight:800; font-size:1.1rem;">#24</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="stat">
+                <div class="muted">Upcoming Reminders</div>
+                <ul style="margin-top:8px; list-style:none; padding-left:0;">
+                  <li class="muted">â€¢ Morning run â€” 6:30 AM</li>
+                  <li class="muted">â€¢ Read â€” 9:00 PM</li>
+                </ul>
+              </div>
+
+              <div class="stat">
+                <div class="muted">Achievements</div>
+                <div style="display:flex; gap:8px; margin-top:10px;">
+                  <div style="background:rgba(0,255,204,0.07); padding:8px; border-radius:8px;" class="muted">7-day streak</div>
+                  <div style="background:rgba(124,92,255,0.06); padding:8px; border-radius:8px;" class="muted">Consistency badge</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="dash-chart">
+              <!-- small inline sparkline SVG -->
+              <svg width="100%" height="130" viewBox="0 0 300 100" preserveAspectRatio="none" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="1">
+                    <stop offset="0%" stop-color="#7c5cff" stop-opacity="0.9"/>
+                    <stop offset="100%" stop-color="#00ffcc" stop-opacity="0.9"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0,70 C30,50 60,40 90,48 C120,60 150,40 180,36 C210,32 240,42 270,22 L300,10 L300,100 L0,100 Z" fill="url(#g1)" opacity="0.12"></path>
+                <path d="M0,70 C30,50 60,40 90,48 C120,60 150,40 180,36 C210,32 240,42 270,22" fill="none" stroke="url(#g1)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>
+                <!-- points -->
+                <circle cx="90" cy="48" r="3.5" fill="#fff"></circle>
+                <circle cx="180" cy="36" r="3.5" fill="#fff"></circle>
+              </svg>
+
+              <div style="margin-top:12px; color:var(--muted); text-align:center;">Weekly habit completion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- DECORATIVE SVG (subtle) -->
+    <svg class="decor-svg" width="420" height="420" viewBox="0 0 420 420" fill="none" aria-hidden="true">
+      <g opacity="0.12">
+        <circle cx="210" cy="210" r="180" fill="#7c5cff"></circle>
+        <circle cx="210" cy="210" r="120" fill="#00ffcc"></circle>
+      </g>
+    </svg>
+
+    <!-- FEATURES -->
+    <section aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Why SAVR</span>
+        </div>
+        <h2 id="features-title">Everything you need to make habits stick</h2>
+        <p class="section-lead">SAVR combines simple habit tracking, gentle reminders, community challenges, and data-driven insights to help you build long-term consistency.</p>
+
+        <div class="spacer"></div>
+
+        <div class="grid">
+          <div class="card fade-up">
+            <div class="icon">ðŸ”¥</div>
+            <h3>Streak-first design</h3>
+            <p>Visual progress (streaks) and micro-rewards keep motivation high. Build momentum with minimal friction.</p>
+          </div>
+
+          <div class="card fade-up">
+            <div class="icon">â°</div>
+            <h3>Smart reminders</h3>
+            <p>Customize reminders (time-based, location-aware, or habit-linked) so you never miss a day again.</p>
+          </div>
+
+          <div class="card fade-up">
+            <div class="icon">ðŸ“Š</div>
+            <h3>Actionable insights</h3>
+            <p>See which habits move the needle â€” consistency scores, trend lines, and personalized tips powered by lightweight ML rules.</p>
+          </div>
+
+          <div class="card fade-up">
+            <div class="icon">ðŸ¤</div>
+            <h3>Community challenges</h3>
+            <p>Join or create challenges with friends â€” friendly competition and social accountability increase adherence.</p>
+          </div>
+
+          <div class="card fade-up">
+            <div class="icon">ðŸŽ¯</div>
+            <h3>Goals & milestones</h3>
+            <p>Set multi-step goals, checkpoints, and milestones. Celebrate wins and unlock rewards for continued progress.</p>
+          </div>
+
+          <div class="card fade-up">
+            <div class="icon">ðŸ”’</div>
+            <h3>Privacy-first</h3>
+            <p>Your data belongs to you. Exportable backups, clear privacy settings, and industry-standard protections.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS / 3-step -->
+    <section aria-labelledby="how-title">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">How it works</span>
+        </div>
+        <h2 id="how-title">Three steps to forming lasting habits</h2>
+        <p class="section-lead">SAVR removes friction from the habit loop: Reduce setup time, increase consistency, and get helpful insights.</p>
+
+        <div class="spacer"></div>
+
+        <div class="grid" style="grid-template-columns: repeat(3,1fr);">
+          <div class="card fade-up" style="text-align:center;">
+            <!-- inline SVG icon -->
+            <svg width="64" height="64" viewBox="0 0 24 24" style="margin:0 auto 12px; display:block;">
+              <path fill="#00ffcc" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"></path>
+            </svg>
+            <h3>1. Set it up</h3>
+            <p>Pick a habit, choose reminders, and define the reward. Setup takes under a minute.</p>
+          </div>
+
+          <div class="card fade-up" style="text-align:center;">
+            <svg width="64" height="64" viewBox="0 0 24 24" style="margin:0 auto 12px; display:block;">
+              <path fill="#7c5cff" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.41 4.41 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.59 3 22 5.41 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+            </svg>
+            <h3>2. Track daily</h3>
+            <p>Check off actions, log quick notes, or use quick-tap widgets â€” track in a way that fits you.</p>
+          </div>
+
+          <div class="card fade-up" style="text-align:center;">
+            <svg width="64" height="64" viewBox="0 0 24 24" style="margin:0 auto 12px; display:block;">
+              <path fill="#ffd166" d="M12 2l2 6h6l-4.8 3.5L18 18l-6-4-6 4 1.8-6.5L3 8h6z"></path>
+            </svg>
+            <h3>3. Improve with insights</h3>
+            <p>Receive weekly summaries, habit tips, and nudges to keep momentum and avoid burnout.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCT PREVIEW / DEMO -->
+    <section aria-labelledby="demo-title">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Take a peek</span>
+        </div>
+        <h2 id="demo-title">Interactive demo â€” see your progress at a glance</h2>
+        <p class="section-lead">Click "Live Demo" to open the app dashboard in a new tab (local demo from your system).</p>
+
+        <div style="display:flex; gap:18px; align-items:center; margin-top:18px; flex-wrap:wrap;">
+          <a class="btn" href="C:/Projects/flexi/landing page/index.html" target="_blank">Live Demo</a>
+          <a class="btn secondary" href="C:/Projects/flexi/explore/index.html">Full Feature List</a>
+          <a class="btn secondary" href="C:/Projects/flexi/company about/index.html">Product Docs</a>
+        </div>
+
+        <div style="margin-top:22px;">
+          <!-- larger mock / gallery -->
+          <div style="border-radius:12px; overflow:hidden; border:1px solid rgba(255,255,255,0.03);">
+            <!-- screenshot grid / illustration -->
+            <svg viewBox="0 0 900 260" width="100%" height="260" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="g2" x1="0" x2="1">
+                  <stop offset="0" stop-color="#00ffcc"/>
+                  <stop offset="1" stop-color="#7c5cff"/>
+                </linearGradient>
+              </defs>
+              <rect width="100%" height="100%" fill="#061016"></rect>
+              <g transform="translate(28,28)">
+                <rect x="0" y="0" rx="10" width="420" height="200" fill="#071014"></rect>
+                <rect x="440" y="0" rx="10" width="420" height="200" fill="#071014"></rect>
+                <!-- small UI elements -->
+                <g transform="translate(12,12)">
+                  <rect x="0" y="0" rx="6" width="80" height="18" fill="#082125"></rect>
+                  <rect x="0" y="32" rx="6" width="240" height="10" fill="#072023"></rect>
+                </g>
+                <g transform="translate(452,12)">
+                  <rect x="0" y="0" rx="6" width="80" height="18" fill="#082125"></rect>
+                  <rect x="0" y="32" rx="6" width="280" height="10" fill="#072023"></rect>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section aria-labelledby="testi-title">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Community</span>
+        </div>
+        <h2 id="testi-title">What early users say</h2>
+        <p class="section-lead">Real people. Real streaks. Real change.</p>
+
+        <div class="spacer"></div>
+
+        <div class="testimonials">
+          <div class="testimonial fade-up">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar" style="background:#132a2a;"></div>
+              <div>
+                <div style="font-weight:700;">Anika â€” 45 day streak</div>
+                <div class="muted" style="font-size:.9rem;">Student</div>
+              </div>
+            </div>
+            <p style="margin-top:12px;">"SAVR made it ridiculously easy to keep up with my reading habit. The streak visuals actually make it fun."</p>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <div class="pill">Reading</div>
+              <div class="pill">Study</div>
+            </div>
+          </div>
+
+          <div class="testimonial fade-up">
+            <div style="display:flex; gap:12px; align-items:center;">
+              <div class="avatar" style="background:#1a1533;"></div>
+              <div>
+                <div style="font-weight:700;">Sam â€” 120 day streak</div>
+                <div class="muted" style="font-size:.9rem;">Software Engineer</div>
+              </div>
+            </div>
+            <p style="margin-top:12px;">"I love the weekly insights. They helped me see which habits actually improved my focus."</p>
+            <div style="display:flex; gap:8px; margin-top:10px;">
+              <div class="pill">Focus</div>
+              <div class="pill">Pomodoro</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA BANNER -->
+    <section aria-labelledby="final-cta">
+      <div class="container">
+        <div class="cta-banner fade-up" role="region" aria-label="Final call to action">
+          <div>
+            <div class="big">Ready to build a streak you care about?</div>
+            <div class="muted" style="margin-top:8px;">Join thousands of users forming meaningful daily habits â€” no pressure, just tiny wins.</div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <a class="btn" href="C:/Projects/flexi/landing page/index.html">Get Started â€” It's Free</a>
+            <a class="btn secondary" href="C:/Projects/flexi/company about/index.html">See Roadmap</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING (simple) -->
+    <section aria-labelledby="pricing-title">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Pricing</span>
+        </div>
+        <h2 id="pricing-title">Plans that scale with you</h2>
+        <p class="section-lead">Free forever for basic tracking. Premium adds advanced insights and AI-powered guidance.</p>
+
+        <div class="spacer"></div>
+
+        <div class="pricing-grid">
+          <div class="plan fade-up">
+            <h3>Free</h3>
+            <p class="muted">Basic habit tracking, streaks, reminders.</p>
+            <ul class="muted">
+              <li>â€¢ Unlimited habits</li>
+              <li>â€¢ Reminders & widgets</li>
+              <li>â€¢ Community access</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <a class="btn secondary" href="C:/Projects/flexi/landing page/index.html">Start Free</a>
+            </div>
+          </div>
+
+          <div class="plan fade-up">
+            <h3>Pro</h3>
+            <p class="muted">Advanced analytics, custom insights, and priority support.</p>
+            <ul class="muted">
+              <li>â€¢ Advanced charts</li>
+              <li>â€¢ Priority reminders</li>
+              <li>â€¢ Export & backup</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <a class="btn" href="C:/Projects/flexi/landing page/index.html">Upgrade to Pro</a>
+            </div>
+          </div>
+
+          <div class="plan fade-up">
+            <h3>Teams</h3>
+            <p class="muted">Shared plans for families, classrooms, or small teams.</p>
+            <ul class="muted">
+              <li>â€¢ Team dashboards</li>
+              <li>â€¢ Group challenges</li>
+              <li>â€¢ Admin controls</li>
+            </ul>
+            <div style="margin-top:12px;">
+              <a class="btn secondary" href="C:/Projects/flexi/company about/index.html">Contact Sales</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section aria-labelledby="faq-title">
+      <div class="container">
+        <div class="section-title">
+          <span class="eyebrow">Support</span>
+        </div>
+        <h2 id="faq-title">Frequently asked questions</h2>
+        <p class="section-lead">Quick answers to common questions. If you don't find what you need, email us or join the community.</p>
+
+        <div class="spacer"></div>
+
+        <div class="faq">
+          <div class="accordion" role="list">
+            <div class="acc-item">
+              <div class="acc-title" role="button" tabindex="0" aria-expanded="false">Is SAVR free?<span class="muted">+</span></div>
+              <div class="acc-body">Yes â€” SAVR offers a free tier with unlimited habits, reminders, and community access. Pro adds analytics and premium features.</div>
+            </div>
+
+            <div class="acc-item">
+              <div class="acc-title" role="button" tabindex="0" aria-expanded="false">Can I export my data?<span class="muted">+</span></div>
+              <div class="acc-body">Absolutely. You can export your habits and logs as CSV or JSON from your account settings.</div>
+            </div>
+
+            <div class="acc-item">
+              <div class="acc-title" role="button" tabindex="0" aria-expanded="false">How is my data protected?<span class="muted">+</span></div>
+              <div class="acc-body">We use standard encryption and clear privacy controls. You own your data and can delete or export it anytime.</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-grid" style="align-items:start;">
+      <div>
+        <h3 style="color:var(--accent); margin-bottom:8px;">SAVR</h3>
+        <p class="muted">Save your time. Build habits. Live balanced.</p>
+
+        <div class="newsletter" style="margin-top:12px;">
+          <input id="emailInput" type="email" placeholder="you@domain.com" aria-label="Email for newsletter" />
+          <button class="submit" id="subscribeBtn">Subscribe</button>
+        </div>
+
+        <div style="margin-top:12px;">
+          <small class="muted">Â© <span id="year"></span> SAVR. All rights reserved.</small>
+        </div>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:8px;">Product</h4>
+        <ul class="muted" style="list-style:none; padding-left:0;">
+          <li><a href="C:/Projects/flexi/explore/index.html">Features</a></li>
+          <li><a href="C:/Projects/flexi/explore/index.html">How It Works</a></li>
+          <li><a href="C:/Projects/flexi/explore/index.html">Pricing</a></li>
+          <li><a href="C:/Projects/flexi/explore/index.html">Download App</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 style="margin-bottom:8px;">Company</h4>
+        <ul class="muted" style="list-style:none; padding-left:0;">
+          <li><a href="C:/Projects/flexi/company about/index.html">About</a></li>
+          <li><a href="C:/Projects/flexi/company about/index.html">Roadmap</a></li>
+          <li><a href="C:/Projects/flexi/community/index.html">Community</a></li>
+          <li><a href="C:/Projects/flexi/explore/index.html">Help Center</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-action" aria-hidden="false">
+    <div class="fab" id="openCommunity" title="Open Community">ðŸ‘¥</div>
+    <div class="fab" id="openSupport" title="Open Support">ðŸ’¬</div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Basic interactive behaviors:
+    (function(){
+      // Theme toggle
+      const themeToggle = document.getElementById('themeToggle');
+      const root = document.documentElement;
+      // try to load saved theme
+      const saved = localStorage.getItem('savr-theme');
+      if (saved === 'light') root.setAttribute('data-theme', 'light');
+      function toggleTheme() {
+        const current = root.getAttribute('data-theme');
+        if (current === 'light') {
+          root.removeAttribute('data-theme');
+          localStorage.setItem('savr-theme', 'dark');
+          themeToggle.setAttribute('aria-pressed','false');
+        } else {
+          root.setAttribute('data-theme','light');
+          localStorage.setItem('savr-theme', 'light');
+          themeToggle.setAttribute('aria-pressed','true');
+        }
+      }
+      themeToggle.addEventListener('click', toggleTheme);
+
+      // Metric counters (animated)
+      function animateValue(id, start, end, duration) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        let startTimestamp = null;
+        const step = (timestamp) => {
+          if (!startTimestamp) startTimestamp = timestamp;
+          const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+          el.textContent = Math.floor(progress * (end - start) + start).toLocaleString();
+          if (progress < 1) window.requestAnimationFrame(step);
+        };
+        window.requestAnimationFrame(step);
+      }
+      animateValue('metric-streaks', 0, 12340, 1200);
+      animateValue('metric-users', 0, 8420, 1100);
+      animateValue('metric-hours', 0, 54000, 1400);
+
+      // Animate fade-up on scroll
+      const faders = document.querySelectorAll('.fade-up');
+      const appearOptions = { threshold: 0.12, rootMargin: "0px 0px -80px 0px" };
+      const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll){
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('in');
+          appearOnScroll.unobserve(entry.target);
+        });
+      }, appearOptions);
+      faders.forEach(fader => { appearOnScroll.observe(fader); });
+
+      // Accordion logic
+      document.querySelectorAll('.acc-title').forEach(function(t){
+        t.addEventListener('click', function(){
+          const expanded = t.getAttribute('aria-expanded') === 'true';
+          t.setAttribute('aria-expanded', String(!expanded));
+          const body = t.nextElementSibling;
+          if (body.style.display === 'block') {
+            body.style.display = 'none';
+          } else {
+            body.style.display = 'block';
+          }
+        });
+        t.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' ') t.click();
+        });
+      });
+
+      // Quick action buttons
+      document.getElementById('openCommunity').addEventListener('click', function(){
+        // open local community page
+        window.open('C:/Projects/flexi/community/index.html', '_blank');
+      });
+      document.getElementById('openSupport').addEventListener('click', function(){
+        window.open('C:/Projects/flexi/company about/index.html', '_blank');
+      });
+
+      // Button color swap (demo of "make some button color change code too")
+      const altBtnToggle = document.getElementById('altBtnToggle');
+      altBtnToggle.addEventListener('click', function(){
+        document.querySelectorAll('.btn').forEach(b => b.classList.toggle('alt'));
+      });
+
+      // Footer year
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      // Subscribe (simple demo)
+      document.getElementById('subscribeBtn').addEventListener('click', function(){
+        const email = document.getElementById('emailInput').value;
+        if (!email || !email.includes('@')) {
+          alert('Please enter a valid email.');
+          return;
+        }
+        // mock subscribe action
+        this.disabled = true;
+        this.textContent = 'Subscribed';
+        setTimeout(()=>{ this.disabled=false; this.textContent='Subscribe'; alert('Thanks â€” check your inbox!'); }, 1200);
+      });
+
+      // Smooth scroll for internal anchors (if any)
+      document.querySelectorAll('a[href^="#"]').forEach(a=>{
+        a.addEventListener('click', function(e){
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({behavior:'smooth', block:'start'});
+          }
+        });
+      });
+
+      // Small accessibility focus outlines for keyboard users
+      window.addEventListener('keydown', function(e){
+        if (e.key === 'Tab') document.body.classList.add('show-focus');
+      });
+    })();
+  </script>
+
+  <!-- END -->
+<script src="integrations.js"></script>
+</body>
+</html>
+
